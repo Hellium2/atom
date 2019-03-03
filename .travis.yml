@@ -6,5 +6,4 @@ jdk:
 env:
   - $PROJECT_DIR=homeworks/HW2
 
-script: cd $PROJECT_DIR && chmod +x ./gradlew assemble && chmod +x ./gradlew checkscript:
- - chmod +x ./gradlew assemble check
+script: cd $PROJECT_DIR && chmod +x ./gradlew assemble && chmod +x ./gradlew check
