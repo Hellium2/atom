@@ -1,10 +1,12 @@
 package ru.atom;
 
+
 /**
  * In this assignment you need to implement the following util methods.
  * Note:
  * throw new UnsupportedOperationException(); - is just a stub
  */
+
 public class Util {
 
     public static void main(String[] args) {
@@ -25,12 +27,12 @@ public class Util {
      * @return the largest of values.
      */
     public static int max(int[] values) {
-        int n = values.length;
-        int max = values[0];
-        for (int i = 1; i < n; i++) {
-            if (values[i] > max) max = values[i];
+        int n2 = values.length;
+        int max1 = values[0];
+        for (int i = 1; i < n2; i++) {
+            if (values[i] > max1) max1 = values[i];
         }
-        return max;
+        return max1;
     }
 
     /**
@@ -40,11 +42,11 @@ public class Util {
      * @return the sum of all values.
      */
     public static long sum(int[] values) {
-        int n = values.length;
-        long sum = 0;
-        for (int i = 0; i < n; i++) {
-            sum = sum + values[i];
+        int n1 = values.length;
+        long sum1 = 0;
+        for (int i = 0; i < n1; i++) {
+            sum1 = sum1 + values[i];
         }
-        return sum;
+        return sum1;
     }
 }
