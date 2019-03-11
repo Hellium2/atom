@@ -1,11 +1,18 @@
+package ru.kras;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.slf4j.LoggerFactory;
+
 public class Util {
 
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(Util.class);
+
     public static void main(String[] args) {
+        log.info("Log is active");
         newgame("dictionary.txt");
     }
 

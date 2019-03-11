@@ -1,4 +1,5 @@
 import org.junit.Test;
+import ru.kras.Util;
 
 import static junit.framework.Assert.assertEquals;
 
