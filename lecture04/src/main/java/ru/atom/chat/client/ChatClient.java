@@ -43,7 +43,7 @@ public class ChatClient {
         throw new UnsupportedOperationException();
     }
 
-    //GET host:port/chat/online
+    //GET host:port/chat/online //
     public static Response viewOnline() throws IOException {
         throw new UnsupportedOperationException();
     }
