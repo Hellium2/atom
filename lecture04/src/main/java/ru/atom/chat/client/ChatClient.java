@@ -68,4 +68,13 @@ public class ChatClient {
 
         return client.newCall(request).execute();
     }
+
+    public static Response viewKolvo() throws IOException {
+        Request request = new Request.Builder()
+                .get()
+                .url(PROTOCOL + HOST + PORT + "/chat/kolvo")
+                .addHeader("host", HOST + PORT)
+                .build();
+        return client.newCall(request).execute();
+    }
 }

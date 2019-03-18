@@ -57,7 +57,7 @@ public class ChatController {
     }
 
     /**
-     * curl -X POST -i localhost:8080/chat/say -d "name=I_AM_STUPID&msg=Hello everyone in this chat"
+     * curl -X POST -i localhost:8080/chat/say -d "name=I_AM_STUPID&text=Hello everyone in this chat"
      */
 
     @RequestMapping(
@@ -65,7 +65,7 @@ public class ChatController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> say(@RequestParam("name") String name, @RequestParam("msg") String text) {
+    public ResponseEntity<String> say(@RequestParam("name") String name, @RequestParam("text") String text) {
         if (!usersOnline.containsKey(name)) {
             return ResponseEntity.badRequest().body("User [" + name + "] not logged in");
         }
@@ -99,6 +99,18 @@ public class ChatController {
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity chat() {
         String responseBody = String.join("\n", messages.stream().collect(Collectors.toList()));
+        return ResponseEntity.ok(responseBody);
+    }
+
+    /**
+     * curl -i localhost:8080/chat/kolvo
+     */
+    @RequestMapping(
+            path = "kolvo",
+            method = RequestMethod.GET,
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity kolvo() {
+        String responseBody = String.valueOf(messages.size());
         return ResponseEntity.ok(responseBody);
     }
 }
