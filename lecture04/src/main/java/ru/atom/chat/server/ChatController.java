@@ -21,6 +21,9 @@ public class ChatController {
     private Queue<String> messages = new ConcurrentLinkedQueue<>();
     private Map<String, String> usersOnline = new ConcurrentHashMap<>();
 
+    private Queue<String> messages2 = new ConcurrentLinkedQueue<>();
+    private Map<String, Queue<String>> privateMessages = new ConcurrentHashMap<>();
+
     /**
      * curl -X POST -i localhost:8080/chat/login -d "name=I_AM_STUPID"
      */
@@ -70,6 +73,12 @@ public class ChatController {
             return ResponseEntity.badRequest().body("User [" + name + "] not logged in");
         }
         messages.add("[" + name + "]: " + text);
+
+        /*        messages2 = privateMessages.get(name); */
+        messages2.add("[" + name + "]: " + text);
+        privateMessages.put(name, messages2);
+        /*        messages2.clear();*/
+
         return ResponseEntity.ok().build();
     }
 
@@ -100,5 +109,67 @@ public class ChatController {
     public ResponseEntity chat() {
         String responseBody = String.join("\n", messages.stream().collect(Collectors.toList()));
         return ResponseEntity.ok(responseBody);
+    }
+
+    /**
+     * curl -i localhost:8080/chat/kolvo
+     */
+    @RequestMapping(
+            path = "kolvo",
+            method = RequestMethod.GET,
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity kolvo() {
+        String responseBody = String.valueOf(messages.size());
+        return ResponseEntity.ok(responseBody);
+    }
+
+    /**
+     * curl -i localhost:8080/chat/privatechat -d "name=I_AM_STUPID"
+     */
+
+    /*
+    @RequestMapping(
+            path = "privatechat",
+            method = RequestMethod.GET,
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity privatechat(@RequestParam("name") String name) {
+        String responseBody = String.join("\n", privateMessages.get(name));
+        return ResponseEntity.ok(responseBody);
+    }
+    */
+
+    /**
+     * curl -X POST -i localhost:8080/chat/rename -d "name=I_AM_STUPID&newname=IAMSTUPID"
+     */
+
+    @RequestMapping(
+            path = "rename",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<String> rename(@RequestParam("name") String name, @RequestParam("newname") String newName) {
+        if (!usersOnline.containsKey(name)) {
+            return ResponseEntity.badRequest().body("User [" + name + "] not logged in");
+        }
+        usersOnline.remove(name, name);
+        usersOnline.put(newName, newName);
+
+        messages.add("[" + name + "] rename to [" + newName + "]");
+        return ResponseEntity.ok().build();
+    }
+
+
+    /**
+     * curl -X POST -i localhost:8080/chat/clear -d "name=I_AM_STUPID"
+     */
+    @RequestMapping(
+            path = "clear",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<String> clear(@RequestParam("name") String name) {
+        if (!usersOnline.containsKey(name)) {
+            return ResponseEntity.badRequest().body("User [" + name + "] not logged in");
+        }
+        messages.clear();
+        return ResponseEntity.ok().build();
     }
 }

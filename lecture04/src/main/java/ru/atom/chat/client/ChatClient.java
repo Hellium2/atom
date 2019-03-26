@@ -65,7 +65,50 @@ public class ChatClient {
                 .post(RequestBody.create(mediaType, ""))
                 .url(PROTOCOL + HOST + PORT + "/chat/logout?name=" + name)
                 .build();
+        return client.newCall(request).execute();
+    }
 
+    public static Response viewKolvo() throws IOException {
+        Request request = new Request.Builder()
+                .get()
+                .url(PROTOCOL + HOST + PORT + "/chat/kolvo")
+                .addHeader("host", HOST + PORT)
+                .build();
+        return client.newCall(request).execute();
+    }
+
+    /*
+    //GET host:port/chat/privatechat?name=my_name
+    public static Response viewPrivateChat(String name) throws IOException {
+        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        Request request = new Request.Builder()
+                .get()
+                .post(RequestBody.create(mediaType, ""))
+                .url(PROTOCOL + HOST + PORT + "/chat/privatechat?name=" + name)
+                .addHeader("host", HOST + PORT)
+                .build();
+        return client.newCall(request).execute();
+    }
+    */
+
+    //POST host:port/chat/rename?name=my_name
+    //Body: "newName='newname'"
+    public static Response rename(String name, String newName) throws IOException {
+        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        Request request = new Request.Builder()
+                .post(RequestBody.create(mediaType, ""))
+                .url(PROTOCOL + HOST + PORT + "/chat/rename?name=" + name + "&newname=" + newName)
+                .build();
+        return client.newCall(request).execute();
+    }
+
+    //POST host:port/chat/clear
+    public static Response clear(String name) throws IOException {
+        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        Request request = new Request.Builder()
+                .post(RequestBody.create(mediaType, ""))
+                .url(PROTOCOL + HOST + PORT + "/chat/clear?name=" + name)
+                .build();
         return client.newCall(request).execute();
     }
 }
