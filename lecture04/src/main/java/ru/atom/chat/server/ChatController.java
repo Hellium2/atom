@@ -20,9 +20,8 @@ import java.util.stream.Collectors;
 public class ChatController {
     private Queue<String> messages = new ConcurrentLinkedQueue<>();
     private Map<String, String> usersOnline = new ConcurrentHashMap<>();
-
-    //private Queue<String> messages2 = new ConcurrentLinkedQueue<>();
     private Map<String, Queue<String>> privateMessages = new ConcurrentHashMap<>();
+
 
     /**
      * curl -X POST -i localhost:8080/chat/login -d "name=I_AM_STUPID"
@@ -47,6 +46,7 @@ public class ChatController {
         return ResponseEntity.ok().build();
     }
 
+
     /**
      * curl -i localhost:8080/chat/online
      */
@@ -59,10 +59,10 @@ public class ChatController {
         return ResponseEntity.ok(responseBody);
     }
 
+
     /**
      * curl -X POST -i localhost:8080/chat/say -d "name=I_AM_STUPID&text=Hello everyone in this chat"
      */
-
     @RequestMapping(
             path = "say",
             method = RequestMethod.POST,
@@ -72,8 +72,8 @@ public class ChatController {
         if (!usersOnline.containsKey(name)) {
             return ResponseEntity.badRequest().body("User [" + name + "] not logged in");
         }
-        messages.add("[" + name + "]: " + text);
 
+        messages.add("[" + name + "]: " + text);
 
         Queue<String> messagesForUser;
         if (!privateMessages.containsKey(name)) {
@@ -84,14 +84,13 @@ public class ChatController {
         }
         messagesForUser.add("[" + name + "]: " + text);
 
-
         return ResponseEntity.ok().build();
     }
+
 
     /**
      * curl -X POST -i localhost:8080/chat/logout -d "name=I_AM_STUPID"
      */
-
     @RequestMapping(
             path = "logout",
             method = RequestMethod.POST,
@@ -105,6 +104,7 @@ public class ChatController {
         return ResponseEntity.ok().build();
     }
 
+
     /**
      * curl -i localhost:8080/chat/chat
      */
@@ -116,6 +116,7 @@ public class ChatController {
         String responseBody = String.join("\n", messages.stream().collect(Collectors.toList()));
         return ResponseEntity.ok(responseBody);
     }
+
 
     /**
      * curl -i localhost:8080/chat/kolvo
@@ -131,43 +132,21 @@ public class ChatController {
 
 
     /**
-     * curl -i localhost:8080/chat/privatechat -d "name=I_AM_STUPID"
-     * curl -X GET -i localhost:8080/chat/privatechat -d "name=I_AM_STUPID"
-     * curl -i localhost:8080/chat/private
+     * curl -i localhost:8080/chat/private -d "name=I_AM_STUPID"
      */
-
     @RequestMapping(
             path = "private",
             method = RequestMethod.POST,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity privatechat(@RequestParam("name") String name) {
-        String name0 = "I_AM_STUPID";
-//        String responseBody = String.valueOf(privateMessages.get(name));
         String responseBody = String.join("\n", privateMessages.get(name).stream().collect(Collectors.toList()));
         return ResponseEntity.ok(responseBody);
     }
-
-    /*
-
-    @RequestMapping(
-            path = "privatechat",
-            method = RequestMethod.GET,
-            produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity privatechat(@RequestParam("name") String name) {
-        //       String responseBody = String.join("\n", privateMessages.get(name).stream().collect(Collectors.toList()));
-    //    String responseBody = String.join("\n", privateMessages.keySet().stream().sorted().collect(Collectors.toList()));
-   //     String responseBody="Helloy";
-        String responseBody = String.valueOf(privateMessages.get(name));
-        return ResponseEntity.ok(responseBody);
-    }
-
-    */
 
 
     /**
      * curl -X POST -i localhost:8080/chat/rename -d "name=I_AM_STUPID&newname=IAMSTUPID"
      */
-
     @RequestMapping(
             path = "rename",
             method = RequestMethod.POST,
