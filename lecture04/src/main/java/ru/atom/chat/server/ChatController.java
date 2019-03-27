@@ -21,7 +21,7 @@ public class ChatController {
     private Queue<String> messages = new ConcurrentLinkedQueue<>();
     private Map<String, String> usersOnline = new ConcurrentHashMap<>();
 
-    private Queue<String> messages2 = new ConcurrentLinkedQueue<>();
+    //private Queue<String> messages2 = new ConcurrentLinkedQueue<>();
     private Map<String, Queue<String>> privateMessages = new ConcurrentHashMap<>();
 
     /**
@@ -74,10 +74,17 @@ public class ChatController {
         }
         messages.add("[" + name + "]: " + text);
 
-        /*        messages2 = privateMessages.get(name); */
-        messages2.add("[" + name + "]: " + text);
-        privateMessages.put(name, messages2);
-        /*        messages2.clear();*/
+
+        Queue<String> messagesForUser;
+        if (!privateMessages.containsKey(name)){
+            messagesForUser = new ConcurrentLinkedQueue<>();
+            privateMessages.put(name, messagesForUser);
+        }
+        else{
+            messagesForUser=privateMessages.get(name);
+        }
+        messagesForUser.add("[" + name + "]: " + text);
+
 
         return ResponseEntity.ok().build();
     }
@@ -127,16 +134,16 @@ public class ChatController {
      * curl -i localhost:8080/chat/privatechat -d "name=I_AM_STUPID"
      */
 
-    /*
+
     @RequestMapping(
             path = "privatechat",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity privatechat(@RequestParam("name") String name) {
-        String responseBody = String.join("\n", privateMessages.get(name));
+        String responseBody = String.join("\n", privateMessages.get(name).stream().collect(Collectors.toList()));
         return ResponseEntity.ok(responseBody);
     }
-    */
+
 
     /**
      * curl -X POST -i localhost:8080/chat/rename -d "name=I_AM_STUPID&newname=IAMSTUPID"

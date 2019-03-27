@@ -77,19 +77,17 @@ public class ChatClient {
         return client.newCall(request).execute();
     }
 
-    /*
+
     //GET host:port/chat/privatechat?name=my_name
     public static Response viewPrivateChat(String name) throws IOException {
-        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
         Request request = new Request.Builder()
                 .get()
-                .post(RequestBody.create(mediaType, ""))
                 .url(PROTOCOL + HOST + PORT + "/chat/privatechat?name=" + name)
                 .addHeader("host", HOST + PORT)
                 .build();
         return client.newCall(request).execute();
     }
-    */
+
 
     //POST host:port/chat/rename?name=my_name
     //Body: "newName='newname'"
