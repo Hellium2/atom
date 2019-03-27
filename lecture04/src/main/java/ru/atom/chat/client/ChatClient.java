@@ -80,6 +80,18 @@ public class ChatClient {
 
     //GET host:port/chat/privatechat?name=my_name
     public static Response viewPrivateChat(String name) throws IOException {
+        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        Request request = new Request.Builder()
+                .post(RequestBody.create(mediaType, ""))
+                .url(PROTOCOL + HOST + PORT + "/chat/private?name=" + name)
+                .addHeader("host", HOST + PORT)
+                .build();
+        return client.newCall(request).execute();
+    }
+
+/*
+    //GET host:port/chat/privatechat?name=my_name
+    public static Response viewPrivateChat(String name) throws IOException {
         Request request = new Request.Builder()
                 .get()
                 .url(PROTOCOL + HOST + PORT + "/chat/privatechat?name=" + name)
@@ -87,6 +99,7 @@ public class ChatClient {
                 .build();
         return client.newCall(request).execute();
     }
+    */
 
 
     //POST host:port/chat/rename?name=my_name

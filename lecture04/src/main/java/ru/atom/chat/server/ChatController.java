@@ -76,12 +76,11 @@ public class ChatController {
 
 
         Queue<String> messagesForUser;
-        if (!privateMessages.containsKey(name)){
+        if (!privateMessages.containsKey(name)) {
             messagesForUser = new ConcurrentLinkedQueue<>();
             privateMessages.put(name, messagesForUser);
-        }
-        else{
-            messagesForUser=privateMessages.get(name);
+        } else {
+            messagesForUser = privateMessages.get(name);
         }
         messagesForUser.add("[" + name + "]: " + text);
 
@@ -130,19 +129,39 @@ public class ChatController {
         return ResponseEntity.ok(responseBody);
     }
 
+
     /**
      * curl -i localhost:8080/chat/privatechat -d "name=I_AM_STUPID"
+     * curl -X GET -i localhost:8080/chat/privatechat -d "name=I_AM_STUPID"
+     * curl -i localhost:8080/chat/private
      */
 
+    @RequestMapping(
+            path = "private",
+            method = RequestMethod.POST,
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity privatechat(@RequestParam("name") String name) {
+        String name0 = "I_AM_STUPID";
+//        String responseBody = String.valueOf(privateMessages.get(name));
+        String responseBody = String.join("\n", privateMessages.get(name).stream().collect(Collectors.toList()));
+        return ResponseEntity.ok(responseBody);
+    }
+
+    /*
 
     @RequestMapping(
             path = "privatechat",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity privatechat(@RequestParam("name") String name) {
-        String responseBody = String.join("\n", privateMessages.get(name).stream().collect(Collectors.toList()));
+        //       String responseBody = String.join("\n", privateMessages.get(name).stream().collect(Collectors.toList()));
+    //    String responseBody = String.join("\n", privateMessages.keySet().stream().sorted().collect(Collectors.toList()));
+   //     String responseBody="Helloy";
+        String responseBody = String.valueOf(privateMessages.get(name));
         return ResponseEntity.ok(responseBody);
     }
+
+    */
 
 
     /**
